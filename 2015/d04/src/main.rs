@@ -4,6 +4,9 @@ fn main() {
 
     let part1_result: String = part1(&contents);
     println!("Part 1: {}", part1_result);
+
+    let part2_result = part2(&contents);
+    println!("Part 2: {}", part2_result);
 }
 
 fn part1(contents: &String) -> String {
@@ -15,6 +18,22 @@ fn part1(contents: &String) -> String {
         let hash_string: String = format!("{:x}", md5::compute(&contents_and_number));
 
         if hash_string.starts_with("00000") {
+            return format!("Number: {}, Hash: {}", number, hash_string);
+        }
+
+        number += 1;
+    }
+}
+
+fn part2(contents: &String) -> String {
+    let mut number: i32 = 0;
+
+    loop {
+        // Combine the contents and the number to create the input string
+        let contents_and_number: String = format!("{}{}", contents, number);
+        let hash_string: String = format!("{:x}", md5::compute(&contents_and_number));
+
+        if hash_string.starts_with("000000") {
             return format!("Number: {}, Hash: {}", number, hash_string);
         }
 
