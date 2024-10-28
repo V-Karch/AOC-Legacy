@@ -49,6 +49,21 @@ fn evaluate_wire(
     result & 0xFFFF
 }
 
+fn override_wire_b_and_reset(
+    a_signal: u16,
+    wires: &mut HashMap<String, String>,
+    evaluated: &mut HashMap<String, u16>,
+) -> u16 {
+    // Override wire b with the signal from wire a
+    wires.insert("b".to_string(), a_signal.to_string());
+
+    // Clear the evaluated cache
+    evaluated.clear();
+
+    // Evaluate wire a again to get the new signal
+    evaluate_wire("a", wires, evaluated)
+}
+
 fn main() {
     let input = std::fs::read_to_string("input.txt").expect("Unable to read file");
     let mut wires = HashMap::new();
@@ -61,4 +76,8 @@ fn main() {
     let mut evaluated = HashMap::new();
     let result_a = evaluate_wire("a", &wires, &mut evaluated);
     println!("Signal to wire a: {}", result_a);
+
+    // Now, override wire b with the signal from wire a and reset others
+    let new_signal_a = override_wire_b_and_reset(result_a, &mut wires, &mut evaluated);
+    println!("New signal to wire a after overriding b: {}", new_signal_a);
 }
