@@ -1,27 +1,66 @@
-#[derive(Debug)]
-struct Edge {
-    base: String,
-    goal: String,
-    distance: u32
-}
+use itertools::Itertools;
+use std::collections::HashMap; // This will help generate permutations
 
 fn main() {
-    let contents = std::fs::read_to_string("input.txt")
-        .expect("Unable to read file.");
+    let contents: String = std::fs::read_to_string("input.txt").expect("Unable to read file.");
 
+    let unique_places: Vec<&str> = Vec::from([
+        "Tambi",
+        "Snowdin",
+        "Norrath",
+        "Faerun",
+        "Tristram",
+        "Arbre",
+        "Straylight",
+        "AlphaCentauri",
+    ]);
+
+    let part1_result: u32 = part1(&contents, &unique_places);
+    println!("Part 1: {}", part1_result);
+}
+
+fn part1(contents: &String, unique_places: &Vec<&str>) -> u32 {
+    let mut distance_map: HashMap<(&str, &str), u32> = HashMap::new();
+
+    // Parse the input into edges
     for line in contents.lines() {
         let pieces: Vec<&str> = line.split(" ").collect();
-
         let base: &str = pieces[0];
         let goal: &str = pieces[2];
-        let distance: u32 = pieces[4].parse::<u32>().expect("Failed to parse int");
+        let distance: u32 = pieces[4].parse::<u32>().expect("Failed to parse distance");
 
-        let edge = Edge {
-            base: (base).to_string(),
-            goal: (goal).to_string(),
-            distance
-        };
-        
-        println!("{:?}", edge);
+        // Add distance to the map (bidirectional)
+        distance_map.insert((base, goal), distance);
+        distance_map.insert((goal, base), distance); // Since the graph is undirected
     }
+
+    // Initialize variables to track the shortest path
+    let mut shortest_distance = u32::MAX;
+
+    // Generate all permutations of the places
+    for perm in unique_places.iter().permutations(unique_places.len()) {
+        let mut current_distance = 0;
+        let mut valid_path = true;
+
+        // Calculate the total distance for this permutation
+        for i in 0..perm.len() - 1 {
+            let from = perm[i];
+            let to = perm[i + 1];
+
+            // Check if the edge exists
+            if let Some(&dist) = distance_map.get(&(from, to)) {
+                current_distance += dist;
+            } else {
+                valid_path = false;
+                break;
+            }
+        }
+
+        // If the path is valid and shorter than the current shortest, update
+        if valid_path && current_distance < shortest_distance {
+            shortest_distance = current_distance;
+        }
+    }
+
+    return shortest_distance;
 }
