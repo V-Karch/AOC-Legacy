@@ -1,12 +1,23 @@
 fn main() {
     let input: String = std::fs::read_to_string("input.txt").expect("failed to read input.txt");
-    let iterations: usize = 40;
-    let part1_result: String = part1(&input, iterations);
+    let part1_iterations: usize = 40;
+    let part2_iterations: usize = 50;
+    let part1_result: String = part1(&input, part1_iterations);
+    let part2_result: String = part2(&input, part2_iterations);
 
     println!("Part 1: {}", part1_result.len());
+    println!("Part 2: {}", part2_result.len());
 }
 
 fn part1(input: &str, iterations: usize) -> String {
+    return look_and_say(input, iterations);
+}
+
+fn part2(input: &str, iterations: usize) -> String {
+    return look_and_say(input, iterations);
+}
+
+fn look_and_say(input: &str, iterations: usize) -> String {
     let mut current_sequence: String = input.to_string();
 
     for _ in 0..iterations {
