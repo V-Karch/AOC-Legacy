@@ -1,4 +1,12 @@
-fn look_and_say(input: &str, iterations: usize) -> String {
+fn main() {
+    let input: String = std::fs::read_to_string("input.txt").expect("failed to read input.txt");
+    let iterations: usize = 40;
+    let part1_result: String = part1(&input, iterations);
+
+    println!("Part 1: {}", part1_result.len());
+}
+
+fn part1(input: &str, iterations: usize) -> String {
     let mut current_sequence: String = input.to_string();
 
     for _ in 0..iterations {
@@ -27,16 +35,4 @@ fn look_and_say(input: &str, iterations: usize) -> String {
     }
 
     return current_sequence;
-}
-
-fn main() {
-    let input: String = std::fs::read_to_string("input.txt").expect("failed to read input.txt");
-    let iterations: usize = 40;
-    let result: String = look_and_say(&input, iterations);
-
-    println!(
-        "The length of the result after {} iterations is: {}",
-        iterations,
-        result.len()
-    );
 }
