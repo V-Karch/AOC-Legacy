@@ -2,6 +2,6 @@
 Legacy advent of code solutions from years prior to 2024
 
 ## 2015
-⣿⣿⣿⣿⣄⣀⣀⣀⣀⣀⣀ 38%
+⣿⣿⣿⣿⣀⣀⣀⣀⣀⣀ 40%
 
-9/25 days completed
+10/25 days completed
