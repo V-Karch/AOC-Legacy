@@ -1,11 +1,39 @@
+use serde_json::Value;
+
 fn main() {
     let contents = std::fs::read_to_string("input.json").expect("Failed to read input file");
-    let part1_result = part1(contents);
+    let part1_result = part1(&contents);
+    let part2_result = part2(&contents);
 
     println!("Part 1: {}", part1_result);
+    println!("Part 2: {}", part2_result);
 }
 
-fn part1(contents: String) -> i32 {
+fn part2(contents: &String) -> i32 {
+    let as_json: Value = serde_json::from_str(contents)
+        .expect("Failed to read input into json");
+
+    let numeric_value = recurse(&as_json);
+    return numeric_value;
+}
+
+fn recurse(value: &Value) -> i32 {
+    return match value {
+        Value::Number(num) => num.as_i64().unwrap_or(0) as i32,
+        Value::Array(arr) => arr.iter().map(recurse).sum(),
+        Value::Object(map) => {
+            if map.values().any(|v| v == "red") {
+                0
+            } else {
+                map.values().map(recurse).sum()
+            }
+        }
+        _ => 0,
+    };
+}
+
+
+fn part1(contents: &String) -> i32 {
     let mut in_number = false;
     let mut temp_num: Vec<char> = Vec::new();
     let mut sum = 0;
