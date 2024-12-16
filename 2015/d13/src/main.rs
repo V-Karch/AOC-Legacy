@@ -1,5 +1,5 @@
 #[derive(Debug)]
-pub struct Vertex {
+pub struct Edge {
     pub from: String,
     pub to: String,
     pub value: i32
@@ -8,7 +8,7 @@ pub struct Vertex {
 fn main() {
     let contents = std::fs::read_to_string("sample_input.txt").expect("Failed to read puzzle input");
 
-    let mut vertices: Vec<Vertex> = vec![]; 
+    let mut edges: Vec<Edge> = vec![]; 
 
     for entry in contents.lines() {
         let split_input = entry.split(" ").collect::<Vec<&str>>();
@@ -25,14 +25,14 @@ fn main() {
             .parse::<i32>()
             .expect("Failed to parse integer value");
 
-        let vertex = Vertex{
+        let vertex = Edge {
             from: from.to_string(),
             to: to.to_string(),
             value,
         };
 
-        vertices.push(vertex);
+        edges.push(vertex);
     }
 
-    println!("{:?}", vertices)
+    println!("{:?}", edges);
 }
